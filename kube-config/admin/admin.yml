@@ -1,0 +1,7 @@
+kube:
+  land:
+    admin:
+      config:
+        type: Java
+        framework: "Spring Boot"
+      contributor: navikco.admin
