@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: admin
+  profiles:
+    active: local
+  cloud:
+    config:
+      allowOverride: true
+      overrideNone: true
+      overrideSystemProperties: false
+
+logging:
+  file: "/opt/mw/mount/logs/kube/\${spring.application.name}/\${spring.cloud.client.ip-address}/\${spring.application.name}.log"
+  config: /opt/mw/app/kube/logback-spring.xml
+
+server:
+  port: ${PORT:8761}
+
+---
+
+spring:
+  profiles: local
+
+logging:
+  file: ./logs/\${spring.application.name}.log
+  config: ./src/main/resources/logback-spring.xml
+
+---
+
+spring:
+  profiles: "\${spring.profiles.active}"
+  cloud:
+    config:
+      uri: "http://\${KUBE_ADMIN_HOST}:\${KUBE_ADMIN_PORT}/config"
+      label: "\${kubeConfigVersion}"
+      name: blue,admin,kube-core
+      server:
+        bootstrap: true
+        default-application-name: config-server
+        prefix: /config
+        composite:
+          -
+            type: git
+            uri: https://github.com/navikco/micro-config-server.git
+            clone-on-start: true
+            search-paths:
+              - kube-config/*
+              - kube-config/admin/*
+              - kube-config/kube-core/*
+            refresh-rate: 99999999
+            force-pull: true
+            basedir: /opt/mw/apps/kube/config
+            skipSslValidation: true
+            deleteUntrackedBranches: true
+
+---

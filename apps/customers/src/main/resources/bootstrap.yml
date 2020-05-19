@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: customers
+  profiles:
+    active: local
+    include:
+      - customers
+  cloud:
+    config:
+      enabled: false
+
+logging:
+  file: /opt/mw/mount/logs/kube/${spring.application.name}/${spring.cloud.client.ip-address}/${spring.application.name}.log
+  config: /opt/mw/app/kube/logback-spring.xml
+
+---
+
+spring:
+  profiles: ${spring.profiles.active}
+  cloud:
+    config:
+      uri: http://${KUBE_ADMIN_HOST}:${KUBE_ADMIN_PORT}/config
+      label: ${kubeConfigVersion}
+      name: customers
+      fail-fast: true
+
+health:
+  config:
+    enabled: false
+
+---
+
+spring:
+  profiles: local
+
+logging:
+  file: ./logs/\${spring.application.name}.log
+  config: ./src/main/resources/logback-spring.xml
+
+---
