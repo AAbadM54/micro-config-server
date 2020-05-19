@@ -1,7 +1,0 @@
-kube:
-  land:
-    core:
-      config:
-        name: KubeConfigServer
-        url: https://github.com/navikco/micro-config-server.git
-      contributor: navikco
