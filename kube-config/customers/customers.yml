@@ -1,0 +1,17 @@
+kube:
+  land:
+    customers:
+      config1:
+        id: 100
+        name: "Harry Potter"
+        school: "Hogwarts"
+        profession: "Mystery & Magic"
+        friends: "Ron,Hermione,Hagrid"
+        enemy: "Tom Riddle"
+      config2:
+        id: 200
+        name: "Tony Stark"
+        school: "Avengers"
+        profession: "Technology & Innovation"
+        friends: "Steve,Natasha,Bruce,Clint"
+        enemy: "Thanos"
